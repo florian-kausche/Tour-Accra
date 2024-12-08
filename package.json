@@ -24,8 +24,10 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "mongo": "^0.1.0",
+    "swagger": "^0.7.5",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
+    "swagger-ui": "^5.18.2",
     "swagger-ui-express": "^5.0.1"
   }
 }
