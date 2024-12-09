@@ -2,7 +2,7 @@
 GET http://localhost:3000/places HTTP/1.1
 
 ### GET Request by ID
-GET http://localhost:3000/places/6755ac0dc7556e200b772c2d HTTP/1.1
+GET http://localhost:3000/places/6755ab83c7556e200b772c2a HTTP/1.1
 
 ### POST Request (Create a place)
 POST http://localhost:3000/places/ HTTP/1.1
@@ -13,14 +13,14 @@ Content-Type: application/json
     "description": "A place for national prayer for all citizens.",
     "location": "Central Accra",
     "category": "Conference Center",
-    "priority": "Highly Recommended",
+    "priority": "Not Recommended",
     "status": "Not Active",
     "createdBy": "63a1f3e7c9a8b6a72d1e78ef",
     "addedDate": "2024-12-05"
 }
 
 ### PUT Request (Update a place)
-PUT http://localhost:3000/places/675602a8d67afe3b7fca9f21 HTTP/1.1
+PUT http://localhost:3000/places/675685caad5007a07d64fdb5 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -35,5 +35,5 @@ Content-Type: application/json
 }
 
 ### DELETE Request (Delete a place)
-DELETE http://localhost:3000/places/675602a8d67afe3b7fca9f21 HTTP/1.1
+DELETE http://localhost:3000/places/675685caad5007a07d64fdb5 HTTP/1.1
 

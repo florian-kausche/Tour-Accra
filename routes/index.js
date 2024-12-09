@@ -11,7 +11,7 @@ router.delete('/places/:id', placesController.deletePlace); // Corrected 'delete
 
 // Root route for testing
 router.get('/', (req, res) => {
-    res.send("Hello World, it's me, Florian");
+    res.send("Welcome To Accra");
 });
 
 // Export the router to use in the main application
