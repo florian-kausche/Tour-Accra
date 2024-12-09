@@ -18,9 +18,9 @@ const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'CSE341 Task Tracker API',
+      title: 'Accra Tour Api',
       version: '1.0.0',
-      description: 'API for managing tasks',
+      description: 'API for managing tasks places to visit in Accra',
     },
     servers: [
       {
@@ -28,7 +28,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/index.js', './controllers/posts.js'], // Adjust this path as needed
+  apis: ['./routes/index.js', './controllers/places.js'], // Adjust this path as needed
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

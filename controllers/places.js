@@ -2,7 +2,7 @@
 const mongodb = require('../data/database');
 
 // Import the 'ObjectId' class from the 'mongodb' module for handling MongoDB document IDs.
-const ObjectId = require('mongodb').ObjectId;
+const { ObjectId } = require('mongodb');
 
 /**
  * @swagger
@@ -12,6 +12,27 @@ const ObjectId = require('mongodb').ObjectId;
  *     responses:
  *       200:
  *         description: A list of places
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   title:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   location:
+ *                     type: string
+ *                   priority:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                   createdBy:
+ *                     type: string
+ *                   addedDate:
+ *                     type: string
  */
 const getAll = async (req, res) => {
     // Fetch all documents in the 'places' collection from the database.
@@ -38,6 +59,25 @@ const getAll = async (req, res) => {
  *     responses:
  *       200:
  *         description: Place retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 location:
+ *                   type: string
+ *                 priority:
+ *                   type: string
+ *                 status:
+ *                   type: string
+ *                 createdBy:
+ *                   type: string
+ *                 addedDate:
+ *                   type: string
  */
 const getSingle = async (req, res) => {
     // Create a new ObjectId from the ID provided in the request parameters.
@@ -67,7 +107,7 @@ const getSingle = async (req, res) => {
  *                 type: string
  *               description:
  *                 type: string
- *               dueDate:
+ *               location:
  *                 type: string
  *               priority:
  *                 type: string
@@ -75,9 +115,32 @@ const getSingle = async (req, res) => {
  *                 type: string
  *               createdBy:
  *                 type: string
+ *               addedDate:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Place created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 title:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 location:
+ *                   type: string
+ *                 priority:
+ *                   type: string
+ *                 status:
+ *                   type: string
+ *                 createdBy:
+ *                   type: string
+ *                 addedDate:
+ *                   type: string
  */
 const createPlace = async (req, res) => {
     // Extract place data from the request body.
@@ -128,7 +191,7 @@ const createPlace = async (req, res) => {
  *                 type: string
  *               description:
  *                 type: string
- *               dueDate:
+ *               location:
  *                 type: string
  *               priority:
  *                 type: string
@@ -136,13 +199,41 @@ const createPlace = async (req, res) => {
  *                 type: string
  *               createdBy:
  *                 type: string
+ *               addedDate:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Place updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 location:
+ *                   type: string
+ *                 priority:
+ *                   type: string
+ *                 status:
+ *                   type: string
+ *                 createdBy:
+ *                   type: string
+ *                 addedDate:
+ *                   type: string
  */
 const updatePlace = async (req, res) => {
+    const placeId = req.params.id;
+
+    // Validate the ObjectId format
+    if (!ObjectId.isValid(placeId)) {
+        return res.status(400).json({ error: 'Invalid ID format' }); // Return error if ID is invalid
+    }
+
     // Create an ObjectId from the request parameter to identify the place to update.
-    const placeId = new ObjectId(req.params.id);
+    const objectId = new ObjectId(placeId);
 
     // Extract updated place data from the request body.
     const place = {
@@ -158,7 +249,7 @@ const updatePlace = async (req, res) => {
     try {
         // Update the place in the 'places' collection with the new data.
         const response = await mongodb.getDatabase().collection('places').updateOne(
-            { _id: placeId }, // Filter to find the place by its ID.
+            { _id: objectId }, // Filter to find the place by its ID.
             { $set: place } // Update the specified fields with new data.
         );
 

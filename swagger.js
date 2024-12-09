@@ -7,17 +7,17 @@ const setupSwagger = (app) => {
     swaggerDefinition: {
       openapi: '3.0.0',
       info: {
-        title: 'CSE341 Task Tracker API',
+        title: 'Accra Tour Api',
         version: '1.0.0',
-        description: 'API for managing tasks',
+        description: 'API for managing tasks places to visit in Accra',
       },
-      // servers: [
-      //   {
-      //     url: 'https://cse341-tasktracker.onrender.com',
-      //   },
-      // ],
+      servers: [
+        {
+          url: 'http://localhost:3000',
+        },
+      ],
     },
-    apis: ['./routes/index.js', './controllers/posts.js'], // Adjust this path as needed
+    apis: ['./controllers/places.js'], // Ensure this path is correct
   };
 
   const swaggerDocs = swaggerJsDoc(swaggerOptions);
