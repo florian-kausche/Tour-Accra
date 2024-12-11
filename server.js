@@ -1,26 +1,47 @@
 const express = require('express');
-const mongodb = require('./data/database'); // Import the 'database' module
-const bodyParser = require('body-parser'); // Optional, if required
+const mongodb = require('./data/database');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const passport = require('./config/passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
-const cors = require('cors'); // Import CORS
-require('dotenv').config(); // Load environment variables (optional if using .env)
+const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
-// Enable CORS for all routes
+// Middleware
 app.use(cors());
+app.use(bodyParser.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
 
-app.use(express.json());
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 
-// Swagger options
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Register auth routes
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
+
+// Swagger configuration
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'Accra Tour Api',
+      title: 'Accra Tour API',
       version: '1.0.0',
-      description: 'API for managing tasks places to visit in Accra',
+      description: 'API for managing places to visit in Accra',
     },
     servers: [
       {
@@ -28,7 +49,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/index.js', './controllers/places.js'], // Adjust this path as needed
+  apis: ['./controllers/places.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -43,10 +64,9 @@ const port = process.env.PORT || 3000;
 // Initialize database connection and start the server
 const startServer = async () => {
   try {
-    // Ensure MongoDB is initialized
     await mongodb.initDb(); // Assuming initDb returns a promise
     app.listen(port, () => {
-      console.log(`Server is running and node is running on port ${port}`);
+      console.log(`Server is running on port ${port}`);
       console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
     });
   } catch (err) {
