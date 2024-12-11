@@ -296,6 +296,13 @@ const deletePlace = async (req, res) => {
     }
 };
 
+// Logout function
+const logout = (req, res) => {
+    req.logout(() => {
+        res.redirect('/'); // Redirect to the login page after logout
+    });
+};
+
 // Export the CRUD functions so they can be used in other parts of the application.
 module.exports = {
     getAll,
@@ -303,4 +310,5 @@ module.exports = {
     createPlace,
     updatePlace,
     deletePlace,
+    logout,
 };

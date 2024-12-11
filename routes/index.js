@@ -8,6 +8,7 @@ router.get('/places/:id', placesController.getSingle); // Route to get a single 
 router.post('/places', placesController.createPlace); // Corrected function name to 'createPlace' for consistency
 router.put('/places/:id', placesController.updatePlace); // Fixed the typo in 'UpdatePlace' to 'updatePlace'
 router.delete('/places/:id', placesController.deletePlace); // Corrected 'deletePlaces' to 'deletePlace' for singular consistency
+router.get('/logout', placesController.logout); // Add this line for logout
 
 // Root route for testing
 router.get('/', (req, res) => {

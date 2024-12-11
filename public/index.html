@@ -15,12 +15,13 @@
         <div id="protected-area" class="form-container" style="display: none;">
             <h2>Welcome To Accra</h2>
             <p>Welcome! You are logged in.</p>
-            <button id="logout-btn">Logout</button>
+            <button id="logout-btn" onclick="window.location.href='/logout';">Logout</button>
             <div id="places-collection">
                 <!-- Collection of places will be displayed here -->
             </div>
         </div>
     </div>
     <script src="script.js"></script>
+    <script src="/controllers/places.js"></script>
 </body>
 </html>
