@@ -1,28 +1,76 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #e9ecef;
 }
 
-.form-container {
+#app {
     background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #343a40;
+    font-size: 24px;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #495057;
+    font-size: 18px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 button {
-    padding: 10px 15px;
+    padding: 14px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+#message {
+    margin-top: 10px;
+    color: #dc3545; /* Red for error messages */
+    font-size: 14px;
 }

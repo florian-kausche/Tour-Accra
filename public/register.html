@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h2>Register</h2>
+        <div class="form-container">
+            <h3>Register with GitHub</h3>
+            <button id="github-register-btn">Register with GitHub</button>
+        </div>
+        <div class="form-container">
+            <h3>Register with Email</h3>
+            <form id="email-register-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="email-register-btn">Register</button>
+            </form>
+            <div id="message" style="display: none;"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('github-register-btn').addEventListener('click', () => {
+            window.location.href = '/auth/github';
+        });
+
+        document.getElementById('email-register-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Send registration request to the server
+            const response = await fetch('/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.textContent = data.message;
+
+            if (response.ok) {
+                // Redirect to login or another page if registration is successful
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register & Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="form-container">
+            <h2>Register with GitHub</h2>
+            <button id="github-register-btn">Register with GitHub</button>
+        </div>
+        <div class="form-container">
+            <h2>Login with GitHub</h2>
+            <button id="login-btn">Login with GitHub</button>
+            <div id="protected-area" style="display: none;">
+                <h2>Welcome!</h2>
+                <p>You are logged in.</p>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('github-register-btn').addEventListener('click', () => {
+            window.location.href = '/auth/github';
+        });
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            window.location.href = '/auth/github';
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await fetch('/auth/logout', { method: 'GET' });
+            window.location.href = '/auth.html';
+        });
+
+        window.onload = async () => {
+            const response = await fetch('/auth/status');
+            const data = await response.json();
+            if (data.isAuthenticated) {
+                document.getElementById('protected-area').style.display = 'block';
+            } else {
+                document.getElementById('protected-area').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html> 

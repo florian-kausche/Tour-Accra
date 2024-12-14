@@ -1,8 +1,9 @@
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 const { getDatabase } = require('../data/database');
 const { ObjectId } = require('mongodb');
-
+const bcrypt = require('bcrypt');
 
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
@@ -33,9 +34,26 @@ async (_accessToken, refreshToken, profile, done) => {
   } catch (error) {
     return done(error, null);
   }
-}
-));
+}));
 
+passport.use(new LocalStrategy(
+    async (username, password, done) => {
+        const db = getDatabase();
+        const usersCollection = db.collection('users');
+        const user = await usersCollection.findOne({ username });
+
+        if (!user) {
+            return done(null, false, { message: 'Incorrect username.' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return done(null, false, { message: 'Incorrect password.' });
+        }
+
+        return done(null, user);
+    }
+));
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -50,7 +68,5 @@ passport.deserializeUser(async (id, done) => {
     done(error, null);
   }
 });
-
-
 
 module.exports = passport;

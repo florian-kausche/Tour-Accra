@@ -7,6 +7,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 
@@ -34,6 +35,14 @@ app.use(passport.session());
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
+// Add the error handler here
+const errorHandler = (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+};
+
+app.use(errorHandler);
+
 // Swagger configuration
 const swaggerOptions = {
   swaggerDefinition: {
@@ -57,6 +66,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Middleware for routes defined in './routes'
 app.use('/', require('./routes'));
+
+// Serve the login page
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
 
 // Get the port from the environment variable or default to 3000
 const port = process.env.PORT || 3000;
