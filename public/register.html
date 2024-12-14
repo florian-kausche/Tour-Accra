@@ -1,59 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8"> <!-- Sets the character encoding to UTF-8 for proper character display -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures the page is responsive on all screen sizes -->
+    <title>Register</title> <!-- The title of the page shown in the browser tab -->
+    <link rel="stylesheet" href="styles.css"> <!-- Links to an external stylesheet for styling the page -->
+    <style>
+        /* Defines a CSS class to hide elements */
+        .hidden {
+            display: none;
+        }
+
+        /* Defines a CSS class to show elements */
+        .visible {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <h2>Register</h2>
+        <h2>Register</h2> <!-- Page heading for registration -->
         <div class="form-container">
-            <h3>Register with GitHub</h3>
-            <button id="github-register-btn">Register with GitHub</button>
-        </div>
-        <div class="form-container">
-            <h3>Register with Email</h3>
-            <form id="email-register-form">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button type="submit" id="email-register-btn">Register</button>
+            <h2>Create Account</h2>
+            <form id="register-form">
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Username" 
+                    required
+                >
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Email" 
+                    required
+                >
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    required
+                >
+                <input 
+                    type="password" 
+                    id="confirm-password" 
+                    name="confirm-password" 
+                    placeholder="Confirm Password" 
+                    required
+                >
+                <button type="submit">Create Account</button>
+                <div class="divider">or</div>
+                <button 
+                    type="button" 
+                    id="github-login" 
+                    onclick="window.location.href='/auth/github'"
+                >
+                    Continue with GitHub
+                </button>
             </form>
-            <div id="message" style="display: none;"></div>
+            <div id="message" class="hidden"></div> <!-- A div to display messages after form submission, initially hidden -->
         </div>
     </div>
+
     <script>
+        // Event listener for the GitHub registration button
         document.getElementById('github-register-btn').addEventListener('click', () => {
-            window.location.href = '/auth/github';
+            window.location.href = '/auth/github'; // Redirects the user to the GitHub registration URL
         });
 
+        // Event listener for the email registration form submission
         document.getElementById('email-register-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
+            event.preventDefault(); // Prevents the default form submission behavior (page reload)
+
+            // Retrieves the username and password input values
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Send registration request to the server
-            const response = await fetch('/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
+            try {
+                // Sends the registration request to the server using the Fetch API
+                const response = await fetch('/auth/register', {
+                    method: 'POST', // HTTP method for the request
+                    headers: {
+                        'Content-Type': 'application/json' // Specifies the request body type as JSON
+                    },
+                    body: JSON.stringify({ username, password }) // Converts the username and password into a JSON string to send in the body of the request
+                });
 
-            const data = await response.json();
-            const messageDiv = document.getElementById('message');
-            messageDiv.style.display = 'block';
-            messageDiv.textContent = data.message;
+                // Parses the JSON response from the server
+                const data = await response.json();
 
-            if (response.ok) {
-                // Redirect to login or another page if registration is successful
-                setTimeout(() => {
-                    window.location.href = '/login.html';
-                }, 2000);
+                // Selects the message div to display the response message
+                const messageDiv = document.getElementById('message');
+                messageDiv.classList.remove('hidden'); // Makes the message div visible
+                messageDiv.classList.add('visible'); // Adds the visible class to show the div
+                messageDiv.textContent = data.message; // Displays the message from the server response
+
+                if (response.ok) {
+                    // If the registration is successful, redirects to the login page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/index.html';
+                    }, 2000);
+                }
+            } catch (error) {
+                // Catches any errors (e.g., network errors) and displays an error message
+                const messageDiv = document.getElementById('message');
+                messageDiv.classList.remove('hidden'); // Makes the message div visible
+                messageDiv.classList.add('visible'); // Adds the visible class to show the div
+                messageDiv.textContent = 'An error occurred. Please try again later.'; // Displays a generic error message
             }
         });
     </script>
 </body>
-</html> 
+</html>

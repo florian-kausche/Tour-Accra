@@ -9,11 +9,12 @@ body {
 
 #app {
     background: white;
-    padding: 40px;
+    padding: 40px 20px;
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    width: 400px;
     text-align: center;
+    box-sizing: border-box;
 }
 
 h2 {
@@ -29,12 +30,13 @@ h3 {
 }
 
 input {
-    width: 100%;
+    width: calc(100% - 28px);
     padding: 14px;
     margin: 10px 0;
     border: 1px solid #ced4da;
     border-radius: 6px;
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 input:focus {
@@ -73,4 +75,78 @@ a:hover {
     margin-top: 10px;
     color: #dc3545; /* Red for error messages */
     font-size: 14px;
+}
+
+.divider {
+    text-align: center;
+    margin: 15px 0;
+    color: #666;
+}
+
+#signup-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#signup-btn:hover {
+    background-color: #218838;
+}
+
+.form-container {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+#register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+}
+
+#register-form button {
+    width: calc(100% - 28px);
+}
+
+#message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#message.error {
+    background-color: #fff3f3;
+    color: #dc3545;
+    border: 1px solid #ffcdd2;
+}
+
+#message.success {
+    background-color: #f0fff0;
+    color: #28a745;
+    border: 1px solid #c3e6cb;
+}
+
+#github-login {
+    background-color: #24292e;
+}
+
+#github-login:hover {
+    background-color: #1b1f23;
+}
+
+p {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+form input {
+    margin: 0;
 }
