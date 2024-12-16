@@ -14,7 +14,14 @@ router.get('/places/:id', isAuthenticated, placesController.getSingle); // Route
 router.post('/places', isAuthenticated, placesController.createPlace); // Corrected function name to 'createPlace' for consistency
 router.put('/places/:id', isAuthenticated, placesController.updatePlace); // Fixed the typo in 'UpdatePlace' to 'updatePlace'
 router.delete('/places/:id', isAuthenticated, placesController.deletePlace); // Corrected 'deletePlaces' to 'deletePlace' for singular consistency
-router.get('/logout', placesController.logout); // Add this line for logout
+router.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed' });
+        }
+        res.redirect('/login.html'); // Redirect to login page after logout
+    });
+});
 
 // Root route for testing
 router.get('/', (req, res) => {

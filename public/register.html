@@ -61,57 +61,10 @@
                     Continue with GitHub
                 </button>
             </form>
-            <div id="message" class="hidden"></div> <!-- A div to display messages after form submission, initially hidden -->
+            <div id="message" class="hidden">successfully Registered</div> <!-- A div to display messages after form submission, initially hidden -->
+            <p>Already have an account? <a href="login.html">Login now</a></p>
         </div>
     </div>
-
-    <script>
-        // Event listener for the GitHub registration button
-        document.getElementById('github-register-btn').addEventListener('click', () => {
-            window.location.href = '/auth/github'; // Redirects the user to the GitHub registration URL
-        });
-
-        // Event listener for the email registration form submission
-        document.getElementById('email-register-form').addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevents the default form submission behavior (page reload)
-
-            // Retrieves the username and password input values
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                // Sends the registration request to the server using the Fetch API
-                const response = await fetch('/auth/register', {
-                    method: 'POST', // HTTP method for the request
-                    headers: {
-                        'Content-Type': 'application/json' // Specifies the request body type as JSON
-                    },
-                    body: JSON.stringify({ username, password }) // Converts the username and password into a JSON string to send in the body of the request
-                });
-
-                // Parses the JSON response from the server
-                const data = await response.json();
-
-                // Selects the message div to display the response message
-                const messageDiv = document.getElementById('message');
-                messageDiv.classList.remove('hidden'); // Makes the message div visible
-                messageDiv.classList.add('visible'); // Adds the visible class to show the div
-                messageDiv.textContent = data.message; // Displays the message from the server response
-
-                if (response.ok) {
-                    // If the registration is successful, redirects to the login page after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = '/index.html';
-                    }, 2000);
-                }
-            } catch (error) {
-                // Catches any errors (e.g., network errors) and displays an error message
-                const messageDiv = document.getElementById('message');
-                messageDiv.classList.remove('hidden'); // Makes the message div visible
-                messageDiv.classList.add('visible'); // Adds the visible class to show the div
-                messageDiv.textContent = 'An error occurred. Please try again later.'; // Displays a generic error message
-            }
-        });
-    </script>
+    <script src="register.js"></script>
 </body>
 </html>

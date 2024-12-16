@@ -3,22 +3,27 @@ document.getElementById('login-btn').addEventListener('click', async (event) => 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Send login request to the server
-    const response = await fetch('/auth/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    });
+    try {
+        // Send login request to the server
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-    if (response.ok) {
-        // Redirect to the dashboard or another page
-        window.location.href = '/dashboard.html';
-    } else {
-        // Handle login error
-        const data = await response.json();
-        alert(data.message);
+        if (response.ok) {
+            // Redirect to the route that serves the collections
+            window.location.href = '/places';
+        } else {
+            // Handle login error
+            const data = await response.json();
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        alert('An error occurred. Please try again later.');
     }
 });
 
