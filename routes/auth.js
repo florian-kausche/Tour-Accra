@@ -48,6 +48,11 @@ router.get('/logout', (req, res) => {
 
 // Check authentication status
 router.get('/status', (req, res) => {
+  if (req.isAuthenticated()) {
+    console.log('User is authenticated:', req.user);
+  } else {
+    console.log('User is not authenticated');
+  }
   res.json({
     isAuthenticated: req.isAuthenticated(),
     user: req.user
@@ -60,33 +65,34 @@ const registerSchema = Joi.object({
 });
 
 router.post('/register', async (req, res) => {
-    // Check if the user is authenticated via GitHub
-    if (!req.isAuthenticated()) {
-        return res.status(401).json({ message: 'User must be authenticated via GitHub to register.' });
-    }
+  // Check if the user is authenticated via GitHub
+  if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: 'User must be authenticated via GitHub to register.' });
+  }
 
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    // Continue with the registration logic
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const db = getDatabase();
-    const usersCollection = db.collection('users');
+  // Continue with the registration logic
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const db = getDatabase();
+  const usersCollection = db.collection('users');
 
-    // Check if user already exists
-    const existingUser = await usersCollection.findOne({ username });
-    if (existingUser) {
-        return res.status(400).json({ message: 'User already exists' });
-    }
+  // Check if user already exists
+  const existingUser = await usersCollection.findOne({ username });
+  if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+  }
 
-    // Create new user
-    const newUser = {
-        username,
-        password: hashedPassword,
-        createdAt: new Date(),
-    };
+  // Create new user
+  const newUser = {
+      username,
+      password: hashedPassword,
+      createdAt: new Date(),
+  };
 
-    await usersCollection.insertOne(newUser);
-    res.status(201).json({ message: 'User registered successfully' });
+  await usersCollection.insertOne(newUser);
+  res.status(201).json({ message: 'User registered successfully' });
+
 });
 
 router.post('/login', passport.authenticate('local', {

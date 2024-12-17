@@ -56,7 +56,11 @@ const swaggerOptions = {
       {
         url: 'http://localhost:3000',
       },
-    ],
+      {
+        url: 'https://tour-accra.onrender.com',
+      },
+    ]
+    
   },
   apis: ['./controllers/places.js'],
 };

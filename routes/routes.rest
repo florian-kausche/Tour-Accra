@@ -1,4 +1,4 @@
 # Use URL to send a GET request to the specified endpoint to fetch all posts.
-GET https://cse341-tasktracker.onrender.com/places
+GET https://tour-accra.onrender.com/places
 
 
