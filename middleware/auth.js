@@ -1,8 +1,9 @@
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return next();
+    return next(); // User is authenticated, allow access to the protected area
   }
-  res.status(401).json({ message: 'Authentication required' });
+  // If not authenticated, redirect to the login page
+  res.redirect('/login.html');
 };
 
 module.exports = {
