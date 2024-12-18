@@ -9,8 +9,7 @@ const Joi = require('joi');
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
 // GitHub callback route
-router.get(
-  '/github/callback',
+router.get('/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
   async (req, res) => {
     const db = getDatabase();
@@ -25,7 +24,7 @@ router.get(
         username: req.user.username,
         displayName: req.user.displayName,
         email: req.user.email,
-        createdAt: new Date(),
+        createdAt: new Date()
       };
       await usersCollection.insertOne(user);
     }
@@ -56,45 +55,24 @@ router.get('/status', (req, res) => {
   }
   res.json({
     isAuthenticated: req.isAuthenticated(),
-    user: req.isAuthenticated() ? req.user : null, // Return user data only if authenticated
+    user: req.user
   });
 });
 
-// Protected area route
-router.get('/protected', (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.json({
-      message: 'Welcome to the protected area!',
-      user: req.user,
-    });
-  }
-
-  res.status(401).json({
-    message: 'You are not authenticated. Access to this area is limited.',
-  });
-});
-
-// Registration validation schema
 const registerSchema = Joi.object({
-  username: Joi.string().min(3).required(),
-  password: Joi.string().min(6).required(),
+    username: Joi.string().min(3).required(),
+    password: Joi.string().min(6).required(),
 });
 
-// Registration route
 router.post('/register', async (req, res) => {
   // Check if the user is authenticated via GitHub
   if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: 'User must be authenticated via GitHub to register.' });
+      return res.status(401).json({ message: 'User must be authenticated via GitHub to register.' });
   }
 
   const { username, password } = req.body;
 
-  // Validate input
-  const { error } = registerSchema.validate({ username, password });
-  if (error) {
-    return res.status(400).json({ message: error.details[0].message });
-  }
-
+  // Continue with the registration logic
   const hashedPassword = await bcrypt.hash(password, 10);
   const db = getDatabase();
   const usersCollection = db.collection('users');
@@ -102,24 +80,24 @@ router.post('/register', async (req, res) => {
   // Check if user already exists
   const existingUser = await usersCollection.findOne({ username });
   if (existingUser) {
-    return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'User already exists' });
   }
 
   // Create new user
   const newUser = {
-    username,
-    password: hashedPassword,
-    createdAt: new Date(),
+      username,
+      password: hashedPassword,
+      createdAt: new Date(),
   };
 
   await usersCollection.insertOne(newUser);
   res.status(201).json({ message: 'User registered successfully' });
+
 });
 
-// Local login route
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/places',
-  failureRedirect: '/login.html',
+    successRedirect: '/login.html',
+    failureRedirect: '/login.html',
 }));
 
 module.exports = router;
