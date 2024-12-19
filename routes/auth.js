@@ -5,6 +5,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 
+
 // GitHub authentication route
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 

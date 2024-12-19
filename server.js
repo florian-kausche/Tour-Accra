@@ -12,7 +12,13 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://tour-accra.onrender.com'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+app.options('*', cors()); // Handle preflight requests
+
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -63,7 +69,6 @@ const swaggerOptions = {
         url: 'https://tour-accra.onrender.com',
       },
     ]
-    
   },
   apis: ['./controllers/places.js'],
 };
