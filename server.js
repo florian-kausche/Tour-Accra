@@ -8,8 +8,10 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
+
 
 // Middleware
 app.use(cors({

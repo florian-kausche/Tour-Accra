@@ -11,8 +11,8 @@ const initDb = async () => {
   }
   try {
     const client = await MongoClient.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
       retryWrites: true,
       w: 'majority'
     });
