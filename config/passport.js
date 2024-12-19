@@ -5,10 +5,14 @@ const { getDatabase } = require('../data/database');
 const { ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 
+const callbackURL = process.env.NODE_ENV === 'production'
+  ? 'https://tour-accra.onrender.com/auth/github/callback'
+  : 'http://localhost:3000/auth/github/callback';
+
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: process.env.GITHUB_CALLBACK_URL
+  callbackURL: callbackURL
 },
 async (_accessToken, refreshToken, profile, done) => {
   try {

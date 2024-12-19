@@ -48,11 +48,6 @@ router.get('/logout', (req, res) => {
 
 // Check authentication status
 router.get('/status', (req, res) => {
-  if (req.isAuthenticated()) {
-    console.log('User is authenticated:', req.user);
-  } else {
-    console.log('User is not authenticated');
-  }
   res.json({
     isAuthenticated: req.isAuthenticated(),
     user: req.user
