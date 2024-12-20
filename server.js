@@ -12,24 +12,18 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://tour-accra.onrender.com'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
-app.options('*', cors()); // Handle preflight requests
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'https://tour-accra.onrender.com',
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
     sameSite: 'lax',
     httpOnly: false,
-    domain: process.env.NODE_ENV === 'https://tour-accra.onrender.com' 
+    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
   }
 }));
 
@@ -69,6 +63,7 @@ const swaggerOptions = {
         url: 'https://tour-accra.onrender.com',
       },
     ]
+    
   },
   apis: ['./controllers/places.js'],
 };
