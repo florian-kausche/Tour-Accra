@@ -8,19 +8,11 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
-const mongoose = require('mongoose');
 
 const app = express();
 
-
 // Middleware
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://tour-accra.onrender.com'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
-app.options('*', cors()); // Handle preflight requests
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -71,6 +63,7 @@ const swaggerOptions = {
         url: 'https://tour-accra.onrender.com',
       },
     ]
+    
   },
   apis: ['./controllers/places.js'],
 };
