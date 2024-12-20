@@ -1,12 +1,8 @@
-const express = require('express');
-const router = express.Router();
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/login');
+}
 
-
-router.get('/protected', isAuthenticated, (req, res) => {
-  res.status(200).json({ 
-    success: true, 
-    message: "Welcome to the protected route!" 
-  });
-});
-
-module.exports = router;
+module.exports = { isAuthenticated };
