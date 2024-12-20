@@ -95,4 +95,9 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login.html',
 }));
 
+router.post('/login', passport.authenticate('remote', {
+  successRedirect: '/login.html',
+  failureRedirect: '/login.html',
+}));
+
 module.exports = router;
