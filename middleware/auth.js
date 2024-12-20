@@ -1,13 +1,11 @@
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    // User is authenticated, allow access to the protected area
-    return next();
+    return next(); // User is authenticated, allow access to the protected area
   }
-
-  // If the user is not authenticated, redirect to GitHub authentication
-  res.redirect('/auth/github'); // Redirect to GitHub login
+  // If not authenticated, redirect to the login page
+  res.redirect.json('/places');
 };
 
 module.exports = {
-  isAuthenticated,
+  isAuthenticated
 };
