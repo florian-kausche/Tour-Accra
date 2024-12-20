@@ -1,11 +1,12 @@
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next(); // User is authenticated, allow access to the protected area
-  }
-  // If not authenticated, redirect to the login page
-  res.redirect('/places');
-};
+const express = require('express');
+const router = express.Router();
+const { isAuthenticated } = require('places');
 
-module.exports = {
-  isAuthenticated
-};
+router.get('/protected', isAuthenticated, (req, res) => {
+  res.status(200).json({ 
+    success: true, 
+    message: "Welcome to the protected route!" 
+  });
+});
+
+module.exports = router;
